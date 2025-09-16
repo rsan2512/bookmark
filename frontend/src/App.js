@@ -73,7 +73,7 @@ function App() {
       />
       {/* Your Content/Components */}
       <div className="app-container relative z-10">
-        <h1>🌸 Roshan-sama's Anime Shrine 🌙</h1>
+        <h1> Roshan Anime Shrine</h1>
 
         <form className="anime-form" onSubmit={handleSubmit}>
           <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
