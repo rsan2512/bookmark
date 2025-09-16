@@ -1,0 +1,110 @@
+/* App.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #232526, #414345);
+  color: #fdfdfd;
+}
+.anime-form {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.anime-form input {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.anime-form button {
+  background-color: #ff5c8a;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.anime-card button {
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.anime-card button:first-child {
+  background-color: #ffd966;
+}
+
+.anime-card button:last-child {
+  background-color: #ff6666;
+  color: white;
+}
+
+.anime-img {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.app-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.mute-button {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  padding: 10px 20px;
+  background: #ffb6b9;
+  color: #1c1c1c;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 182, 185, 0.5);
+  transition: all 0.3s ease-in-out;
+}
+
+.mute-button:hover {
+  background: #fca3a7;
+}
+
+.anime-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+  gap: 1.5rem;
+}
+
+.anime-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  min-width: 250px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  transition: 0.2s;
+}
+
+.anime-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.anime-card h2 {
+  color: #ffdddd;
+  margin-bottom: 0.5rem;
+}
