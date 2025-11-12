@@ -1,0 +1,70 @@
+Hello everyone — thank you for joining. Today I’m going to walk you through the Roshan Anime Shrine project: what it does, how it’s built, how the pieces talk to each other, how to run it locally and deploy it, and a few pointers for demos and next steps.
+
+Overview
+This application is a small full‑stack web project for cataloguing anime you watch. The frontend is a single page React app that displays anime cards, lets you add, edit, search and delete entries. The backend is an Express/Node service that exposes a simple REST API to persist anime records. The UI uses axios to talk to the API and the backend stores anime records in a models layer (the project contains a `models/anime.js`). The goal is a compact, approachable example of a CRUD (Create, Read, Update, Delete) app with a clean UI and easily reproducible deployment.
+
+Hello everyone — thank you for joining. In the next five minutes I’ll present Roshan Anime Shrine with a focus on web development and the MERN stack: what the app does, how the pieces connect, how to run it, and deployment pointers.
+
+What the app is
+Roshan Anime Shrine is a compact CRUD web application that catalogs anime entries. It’s implemented using the MERN stack pattern: React for the frontend, Express/Node for the backend API, and a document database (MongoDB or similar) for persistence. The project demonstrates a common modern web‑dev architecture and is a good base for learning full‑stack workflows.
+
+Architecture and responsibilities
+- React (client): single‑page application in `src/` that renders anime cards, provides search/filtering, and a form to add or edit items. The client uses axios to call the backend API and local state for UI interactions.
+- Express + Node (server): RESTful API under `/api/anime` handling GET, POST, PUT, DELETE. The server validates requests, calls model functions for persistence, and returns JSON responses.
+- MongoDB (data): the model layer in `models/anime.js` contains the persistence logic; in production you’ll point the server at a MongoDB instance using an environment variable like `MONGODB_URI`.
+
+How data flows (simple)
+1. React makes an HTTP request (axios) to the Express endpoint.
+2. Express maps the request to a controller, which uses the model layer to read/write the database.
+3. The server returns JSON; React updates UI state and re‑renders.
+This request/response pattern is the backbone of most single‑page apps.
+
+Key tools and why they matter
+- Node.js & npm: run-time and package tooling.
+- React: component based UI and state management.
+- axios: promise‑based HTTP client used by the frontend.
+- Express: minimal, flexible backend framework for APIs.
+- MongoDB: flexible document store that fits iterative web apps.
+- Dev helpers: nodemon (auto‑restart), Postman (API testing), and VS Code (editing/debugging).
+
+Run locally — focused steps
+1) Start the backend (from project root):
+
+```powershell
+cd "d:\projects\comp proj\anime\backend"
+npm install
+node server.js
+```
+
+2) Start the frontend (separate terminal):
+
+```powershell
+cd "d:\projects\comp proj\anime\frontend"
+npm install
+npm start
+```
+
+Notes: the backend defaults to port 5000; the frontend expects the API at `http://localhost:5000/api/anime`. If PowerShell blocks `npm start`, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` or use CMD/WSL.
+
+Deployment pointers
+- Frontend: build the React app and host it on static hosts like Vercel or Netlify. If using Vercel, set the project root to `/frontend` so the install/build runs in the right folder.
+- Backend: deploy Express to any Node host (Render, Heroku, Azure). Provide environment variables for `PORT` and `MONGODB_URI`. Set up CORS if frontend and backend are hosted on different origins.
+- Production flow: update the frontend’s API base URL to the deployed backend, then build and publish the static site.
+
+Demo checklist (quick)
+- Start backend and frontend.
+- In the app: search, add, edit, delete items and explain which HTTP method is used for each action.
+
+Troubleshooting highlights
+- `react-scripts: command not found`: ensure `npm install` ran in `/frontend` and `react-scripts` is in `node_modules`.
+- CORS issues: add `cors()` middleware in Express for cross‑origin requests.
+- DB problems: verify `MONGODB_URI` and network access to the database.
+
+Next steps and opportunities
+- Add authentication and per‑user data isolation.
+- Support image uploads and CDN-backed storage.
+- Add automated tests and CI/CD pipelines.
+- Dockerize the stack for reproducible local and CI environments.
+
+Closing
+This project is a practical MERN example that highlights core web‑dev concepts: client/server separation, REST APIs, and persistence. It’s ready for extension into authentication, storage, testing and production CI/CD. If you’d like, I can convert this into slides or a shorter pitch for non‑technical audiences.

@@ -11,6 +11,8 @@ function App() {
     image: ''
   });
   const [editingId, setEditingId] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchAnime();
@@ -34,12 +36,14 @@ function App() {
           fetchAnime();
           setFormData({ title: '', status: '', rating: '', image: '' });
           setEditingId(null);
+          setIsMenuOpen(false);
         });
     } else {
       axios.post('http://localhost:5000/api/anime', formData)
         .then(() => {
           fetchAnime();
           setFormData({ title: '', status: '', rating: '', image: '' });
+          setIsMenuOpen(false);
         });
     }
   };
@@ -47,6 +51,7 @@ function App() {
   const handleEdit = anime => {
     setFormData(anime);
     setEditingId(anime._id);
+    setIsMenuOpen(true);
   };
 
   const handleDelete = id => {
@@ -54,37 +59,71 @@ function App() {
       .then(() => fetchAnime());
   };
 
+  const filteredAnime = animeList.filter(anime =>
+    anime.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    anime.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen w-full bg-[#f9fafb] relative">
-      {/* Diagonal Fade Grid Background - Top Left */}
+    <div 
+      className="min-h-screen w-full relative"
+      style={{
+        backgroundImage: `url('https://wallpaperbat.com/img/43385258-anime-background-anime-background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: '#232526', // Fallback color while image loads
+        minHeight: '100vh',
+      }}
+    >
+      {/* Overlay for better readability */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, #d1d5db 1px, transparent 1px),
-            linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
-          `,
-          backgroundSize: "32px 32px",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 80% at 0% 0%, #000 50%, transparent 90%)",
-          maskImage:
-            "radial-gradient(ellipse 80% 80% at 0% 0%, #000 50%, transparent 90%)",
+          backgroundColor: 'rgba(0, 0, 0, 0.4)', // Dark overlay for better content visibility
         }}
       />
       {/* Your Content/Components */}
-      <div className="app-container relative z-10">
-        <h1> Roshan Anime Shrine</h1>
+      <div className="app-container relative z-10 p-6 mt-4">
+        <h1 className="app-title text-center">Roshan Anime Shrine</h1>
+        
+        <button 
+          className="menu-toggle" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? '↑ Close Menu' : '↓ Open Menu'}
+        </button>
 
-        <form className="anime-form" onSubmit={handleSubmit}>
-          <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
-          <input name="status" value={formData.status} onChange={handleChange} placeholder="Status (Completed, Watching, Dropped)" required />
-          <input name="rating" type="number" value={formData.rating} onChange={handleChange} placeholder="Rating (1-10)" required />
-          <input name="image" value={formData.image} onChange={handleChange} placeholder="Image URL" required />
-          <button type="submit">{editingId ? 'Update Anime' : 'Add Anime'}</button>
-        </form>
+        <div className={`menu-content ${isMenuOpen ? 'open' : ''}`}>
+          <input
+            type="text"
+            placeholder="Search anime..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="anime-form input mb-4"
+            style={{ width: '100%', maxWidth: '400px' }}
+          />
+
+          <form className="anime-form" onSubmit={handleSubmit}>
+            <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
+            {editingId ? (
+              <select name="status" value={formData.status} onChange={handleChange} required>
+                <option value="">Select Status</option>
+                <option value="Completed">Completed</option>
+                <option value="Watching">Watching</option>
+                <option value="Dropped">Dropped</option>
+              </select>
+            ) : (
+              <input name="status" value={formData.status} onChange={handleChange} placeholder="Status (Completed, Watching, Dropped)" required />
+            )}
+            <input name="rating" type="number" value={formData.rating} onChange={handleChange} placeholder="Rating (1-10)" required />
+            <input name="image" value={formData.image} onChange={handleChange} placeholder="Image URL" required />
+            <button type="submit">{editingId ? 'Update Anime' : 'Add Anime'}</button>
+          </form>
+        </div>
 
         <div className="anime-list">
-          {animeList.map(anime => (
+          {filteredAnime.map(anime => (
             <div key={anime._id} className="anime-card">
               <img src={anime.image} alt={anime.title} className="anime-img" />
               <h2>{anime.title}</h2>
