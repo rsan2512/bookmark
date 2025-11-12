@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bookmark-klzw.onrender.com';
+const API_URL = `${import.meta.env.VITE_API_URL}/api/anime`;
 
 export const getAnime = () => axios.get(API_URL);
 export const createAnime = (anime) => axios.post(API_URL, anime);
